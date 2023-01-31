@@ -23,12 +23,19 @@ class ClientController(
     val disabilityRepository: DisabilityRepository,
     val maritalStatusRepository: MaritalStatusRepository
 ) {
+    @GetMapping
+    fun viewAll(model: Model): String {
+        val clients = clientService.findAll()
+        model.addAttribute("clients", clients)
+        return "clients/clientsTable"
+    }
+
     @GetMapping("/new")
     fun createNewClient(model: Model): String {
         loadSelectOptions(model)
         model.addAttribute("newClient", true)
         model.addAttribute("client", ClientDto())
-        return "clientForm"
+        return "clients/clientForm"
     }
 
     @GetMapping("/{id}")
@@ -42,17 +49,19 @@ class ClientController(
             model.addAttribute("client", clientDtoAssembler.toDto(client))
         }
 
-        return "clientForm"
+        return "clients/clientForm"
     }
 
     @PostMapping
     fun saveClient(@ModelAttribute dto: ClientDto, model: Model): String {
-        loadSelectOptions(model)
+        clientService.save(clientDtoAssembler.toEntity(dto))
+        return "redirect:clients"
+    }
 
-        val client = clientService.save(clientDtoAssembler.toEntity(dto))
-        model.addAttribute("client", clientDtoAssembler.toDto(client))
-
-        return "redirect:/clients/${client.id}"
+    @PostMapping("/delete/{id}")
+    fun deleteClient(@PathVariable id: Long): String {
+        clientService.delete(id)
+        return "redirect:http://localhost:8080/clients"
     }
 
     fun loadSelectOptions(model: Model) {

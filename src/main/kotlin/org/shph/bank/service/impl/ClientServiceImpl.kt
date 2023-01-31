@@ -6,12 +6,29 @@ import org.shph.bank.service.ClientService
 import org.springframework.stereotype.Service
 
 @Service
-class ClientServiceImpl(val clientRepository: ClientRepository): ClientService {
+class ClientServiceImpl(val clientRepository: ClientRepository) : ClientService {
+    override fun findAll(): List<Client> {
+        return clientRepository.findAll()
+    }
+
     override fun findById(id: Long): Client? {
         return clientRepository.findById(id).orElse(null)
     }
 
     override fun save(client: Client): Client {
         return clientRepository.save(client)
+    }
+
+    override fun canSaveClient(client: Client): Boolean {
+        return clientRepository.findByLastNameAndFirstNameAndMiddleNameAndPassportIdNumber(
+            client.lastName,
+            client.firstName,
+            client.middleName,
+            client.passportIdNumber
+        ).isEmpty()
+    }
+
+    override fun delete(id: Long) {
+        clientRepository.deleteById(id)
     }
 }

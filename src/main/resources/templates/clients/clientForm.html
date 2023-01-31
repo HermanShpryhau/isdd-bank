@@ -190,10 +190,9 @@
             <div class="row mb-4">
                 <div class="mb-3 col-6">
                     <label for="monthlyIncomeInput" class="form-label">Месячный доход</label>
-                    <input required type="number" id="monthlyIncomeInput" class="form-control" th:field="*{monthlyIncome}">
+                    <input type="number" id="monthlyIncomeInput" class="form-control" th:field="*{monthlyIncome}">
                 </div>
             </div>
-
 
             <button class="btn btn-primary" type="submit" th:text="${newClient} ? 'Добавить клинета' : 'Сохранить изменения'"></button>
         </form>
