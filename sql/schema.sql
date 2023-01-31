@@ -54,19 +54,25 @@ alter table public.marital_statuses
 create unique index marital_statuses_marital_status_id_marital_status_name_uindex
     on public.marital_statuses (marital_status_id, marital_status_name);
 
-create table public.cities
+create table public.addresses
 (
-    city_id   bigserial
-        primary key,
-    city_name varchar(250) not null
-        unique
+    address_id   bigserial
+        primary key
+        unique,
+    city_id      bigint       not null
+        constraint addresses_cities_city_id_fk
+            references public.cities,
+    address_test varchar(250) not null
 );
 
-alter table public.cities
+alter table public.addresses
     owner to "bank-app";
 
-create unique index cities_city_id_city_name_uindex
-    on public.cities (city_id, city_name);
+create unique index addresses_address_id_uindex
+    on public.addresses (address_id);
+
+create index addresses_city_id_index
+    on public.addresses (city_id);
 
 create table public.clients
 (
