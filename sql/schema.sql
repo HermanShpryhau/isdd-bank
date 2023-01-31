@@ -129,3 +129,74 @@ create unique index clients_client_id_uindex
 create index clients_last_name_first_name_middle_name_index
     on public.clients (last_name, first_name, middle_name);
 
+create table public.account_type
+(
+    account_type_id   bigserial
+        primary key,
+    account_type_code varchar(4)   not null
+        unique,
+    account_type_name varchar(250) not null
+        unique,
+    active_flag       boolean      not null
+);
+
+alter table public.account_type
+    owner to "bank-app";
+
+create unique index account_type_account_type_id_account_type_code_account_type_nam
+    on public.account_type (account_type_id, account_type_code, account_type_name);
+
+
+create table public.accounts
+(
+    account_id      bigserial
+        primary key,
+    account_number  varchar(13)       not null
+        unique,
+    account_type_id bigint            not null
+        constraint accounts_account_type_account_type_id_fk
+            references public.account_type,
+    account_owner   bigint
+        constraint accounts_clients_client_id_fk
+            references public.clients,
+    account_balance numeric default 0 not null
+);
+
+alter table public.accounts
+    owner to "bank-app";
+
+create unique index accounts_account_id_account_number_uindex
+    on public.accounts (account_id, account_number);
+
+create index accounts_account_owner_index
+    on public.accounts (account_owner);
+
+
+create table public.transactions
+(
+    transaction_id         bigserial
+        primary key
+        unique,
+    source_account_id      bigint    not null
+        constraint transactions_accounts_account_id_fk
+            references public.accounts
+            on delete restrict,
+    destination_account_id bigint    not null
+        constraint transactions_accounts_account_id_fk_2
+            references public.accounts
+            on delete restrict,
+    amount                 numeric   not null,
+    transaction_timestamp  timestamp not null
+);
+
+alter table public.transactions
+    owner to "bank-app";
+
+create index transactions_destination_account_id_index
+    on public.transactions (destination_account_id);
+
+create index transactions_source_account_id_index
+    on public.transactions (source_account_id);
+
+create unique index transactions_transaction_id_uindex
+    on public.transactions (transaction_id);
