@@ -1,4 +1,4 @@
-<html>
+<html lang="ru-RU">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -12,6 +12,18 @@
 <body>
     <div class="container">
         <h1 class="mt-5" th:text="${newClient} ? 'Новый клиент': 'Редактирование информации'"></h1>
+
+        <div th:if="${validationErrors}">
+            <div class="toast text-bg-danger show" data-bs-autohide="false" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <strong class="me-auto">Ошибка</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    Введенные данные некорректны.
+                </div>
+            </div>
+        </div>
 
         <form class="col-md mt-5" action="#" th:action="@{/clients}" th:object="${client}" method="post">
             <input type="hidden" th:field="*{id}">
@@ -150,7 +162,7 @@
 
             <div class="row mb-4">
                 <div class="mb-3 col-3">
-                    <label for="citizenshipIdInput" class="form-label">Инвалидность</label>
+                    <label for="disabilityIdInput" class="form-label">Инвалидность</label>
                     <select class="form-select col-4" id="disabilityIdInput" th:field="*{disabilityId}">
                         <option th:value="-1" disabled selected value></option>
                         <option th:each="disability : ${disabilities}" th:value="${disability.id}" th:text="${disability.disabilityName}"></option>
