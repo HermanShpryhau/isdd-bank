@@ -29,5 +29,9 @@ open class Transaction(
 
     @NotNull
     @Column(name = "transaction_timestamp", nullable = false)
-    open var timestamp: LocalDateTime = LocalDateTime.now()
+    open var timestamp: LocalDateTime = LocalDateTime.now(),
+
+    @NotNull
+    @Column(name = "committed_flag", nullable = false)
+    open var committed: Boolean = false
 )

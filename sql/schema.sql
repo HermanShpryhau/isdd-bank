@@ -177,16 +177,17 @@ create table public.transactions
     transaction_id         bigserial
         primary key
         unique,
-    source_account_id      bigint    not null
+    source_account_id      bigint                not null
         constraint transactions_accounts_account_id_fk
             references public.accounts
             on delete restrict,
-    destination_account_id bigint    not null
+    destination_account_id bigint                not null
         constraint transactions_accounts_account_id_fk_2
             references public.accounts
             on delete restrict,
-    amount                 numeric   not null,
-    transaction_timestamp  timestamp not null
+    amount                 numeric               not null,
+    transaction_timestamp  timestamp             not null,
+    committed_flag         boolean default false not null
 );
 
 alter table public.transactions
@@ -200,3 +201,4 @@ create index transactions_source_account_id_index
 
 create unique index transactions_transaction_id_uindex
     on public.transactions (transaction_id);
+
