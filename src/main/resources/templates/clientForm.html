@@ -1,0 +1,183 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>    <title>Клиенты</title>
+</head>
+<body>
+    <div class="container">
+        <h1 th:text="${newClient} ? 'Новый кклиент': 'Редактирование информации'"></h1>
+        <form class="col-md" action="#" th:action="@{/clients}" th:object="${client}" method="post">
+            <input type="hidden" th:field="*{id}">
+            <div class="row mt-4 mb-4">
+                <div class="mb-3 col">
+                    <label for="lastNameInput" class="form-label">Фамилия</label>
+                    <input required class="form-control" id="lastNameInput" type="text" th:field="*{lastName}">
+                </div>
+                <div class="mb-3 col">
+                    <label for="firstNameInput" class="form-label">Имя</label>
+                    <input required class="form-control" id="firstNameInput" type="text" th:field="*{firstName}">
+                </div>
+                <div class="mb-3 col">
+                    <label for="middleNameInput" class="form-label">Отчество</label>
+                    <input required class="form-control" id="middleNameInput" type="text" th:field="*{middleName}">
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="mb-3 col-4">
+                    <label for="placeOfBirthInput" class="form-label">Место рождения</label>
+                    <input required id="placeOfBirthInput" class="form-control" type="text" th:field="*{placeOfBirth}">
+                </div>
+                <div class="mb-3 col-2">
+                    <label for="dateOfBirthInput" class="form-label">Дата рождения</label>
+                    <input required class="form-control" id="dateOfBirthInput" type="date" th:field="*{dateOfBirth}">
+                </div>
+                <div class="mb-3 col-2">
+                    <label for="sexInput" class="form-label">Пол</label>
+                    <select class="form-select" id="sexInput" required th:field="*{sex}">
+                        <option th:value="-1" disabled selected value></option>
+                        <option th:value="М" th:text="М"></option>
+                        <option th:value="Ж" th:text="Ж"></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="mb-3 col-3">
+                    <label for="passportSeriesInput" class="form-label">Серия паспорта</label>
+                    <input required class="form-control" id="passportSeriesInput" type="text" th:field="*{passportSeries}">
+                </div>
+                <div class="mb-3 col-3">
+                    <label for="passportNumberInput" class="form-label">Номер паспорта</label>
+                    <input required class="form-control" id="passportNumberInput" type="text" th:field="*{passportNumber}">
+                </div>
+                <div class="mb-3 col-6">
+                    <label for="passportIdNumberInput" class="form-label">Идентификационный номер</label>
+                    <input required class="form-control" id="passportIdNumberInput" type="text" th:field="*{passportIdNumber}">
+                </div>
+
+                <div class="mb-3 col-3">
+                    <label for="passportIssuedByInput" class="form-label">Кем выдан</label>
+                    <input required id="passportIssuedByInput" class="form-control" type="text" th:field="*{passportIssuedBy}">
+                </div>
+                <div class="mb-3 col-2">
+                    <label for="passportIssueDateInput" class="form-label">Дата выдачи</label>
+                    <input required id="passportIssueDateInput" class="form-control" type="date" th:field="*{passportIssueDate}">
+                </div>
+            </div>
+
+            <h4>Адрес фактического проживания</h4>
+            <div class="row mb-4">
+                <div class="mb-3 col-3">
+                    <label for="residentialAddressCityIdInput" class="form-label">Город</label>
+                    <select class="form-select col-4" id="residentialAddressCityIdInput" th:field="*{residentialAddressCityId}">
+                        <option th:value="-1" disabled selected value></option>
+                        <option th:each="city : ${cities}" th:value="${city.id}" th:text="${city.cityName}"></option>
+                    </select>
+                </div>
+                <div class="mb-3 col-4">
+                    <label for="residentialAddressInput" class="form-label">Адрес</label>
+                    <input required class="form-control" id="residentialAddressInput" type="text" th:field="*{residentialAddress}">
+                </div>
+            </div>
+
+            <h4>Адрес прописки</h4>
+            <div class="row mb-4">
+                <div class="mb-3 col-3">
+                    <label for="registrationAddressCityIdInput" class="form-label">Город</label>
+                    <select class="form-select col-4" id="registrationAddressCityIdInput" th:field="*{registrationAddressCityId}">
+                        <option th:value="-1" disabled selected value></option>
+                        <option th:each="city2 : ${cities}" th:value="${city2.id}" th:text="${city2.cityName}"></option>
+                    </select>
+                </div>
+                <div class="mb-3 col-4">
+                    <label for="registrationAddressInput" class="form-label">Адрес</label>
+                    <input required type="text" class="form-control" id="registrationAddressInput" th:field="*{registrationAddress}">
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="mb-3 col-3">
+                    <label for="personalPhoneNumberInput" class="form-label">Мобильный телефон</label>
+                    <input type="text" class="form-control" id="personalPhoneNumberInput" th:field="*{personalPhoneNumber}">
+                </div>
+
+                <div class="mb-3 col-3">
+                    <label for="homePhoneNumberInput" class="form-label">Домашний телефон</label>
+                    <input type="text" class="form-control" id="homePhoneNumberInput" th:field="*{homePhoneNumber}">
+                </div>
+
+                <div class="mb-3 col-6">
+                    <label for="emailInput" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="emailInput" th:field="*{email}">
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="mb-3 col-6">
+                    <label for="placeOfWorkInput" class="form-label">Место работы</label>
+                    <input type="text" class="form-control" id="placeOfWorkInput" th:field="*{placeOfWork}">
+                </div>
+
+                <div class="mb-3 col-6">
+                    <label for="positionAtWorkInput" class="form-label">Должность</label>
+                    <input type="text" class="form-control" id="positionAtWorkInput" th:field="*{positionAtWork}">
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="mb-3 col-3">
+                    <label for="citizenshipIdInput" class="form-label">Гражданство</label>
+                    <select class="form-select col-4" id="citizenshipIdInput" th:field="*{citizenshipId}">
+                        <option th:value="-1" disabled selected value></option>
+                        <option th:each="citizenship : ${citizenships}" th:value="${citizenship.id}" th:text="${citizenship.citizenshipName}"></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="mb-3 col-3">
+                    <label for="citizenshipIdInput" class="form-label">Инвалидность</label>
+                    <select class="form-select col-4" id="disabilityIdInput" th:field="*{disabilityId}">
+                        <option th:value="-1" disabled selected value></option>
+                        <option th:each="disability : ${disabilities}" th:value="${disability.id}" th:text="${disability.disabilityName}"></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="mb-3 col-3">
+                    <label for="maritalStatusIdInput" class="form-label">Семейный статус</label>
+                    <select class="form-select col-4" id="maritalStatusIdInput" th:field="*{maritalStatusId}">
+                        <option th:value="-1" disabled selected value></option>
+                        <option th:each="maritalStatus : ${maritalStatuses}" th:value="${maritalStatus.id}" th:text="${maritalStatus.maritalStatusName}"></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="mb-3 col-6">
+                    <label for="retiredFlagInput" class="form-label">На пенсии</label>
+                    <input type="checkbox" id="retiredFlagInput" class="form-check-label" th:field="*{retiredFlag}">
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="mb-3 col-6">
+                    <label for="monthlyIncomeInput" class="form-label">Месячный доход</label>
+                    <input required type="number" id="monthlyIncomeInput" class="form-control" th:field="*{monthlyIncome}">
+                </div>
+            </div>
+
+
+            <button class="btn btn-primary" type="submit" th:text="${newClient} ? 'Добавить клинета' : 'Сохранить изменения'"></button>
+        </form>
+    </div>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+</body>
+</html>
