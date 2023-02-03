@@ -10,6 +10,8 @@
     <title>Клиенты</title>
 </head>
 <body>
+    <div th:insert="~{components/navbar.html :: navbar}"></div>
+
     <div class="container">
         <h1 class="mt-5" th:text="${newClient} ? 'Новый клиент': 'Редактирование информации'"></h1>
 
