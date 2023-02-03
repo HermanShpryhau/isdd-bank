@@ -4,6 +4,7 @@ import org.shph.bank.model.Client
 import org.shph.bank.repository.ClientRepository
 import org.shph.bank.service.ClientService
 import org.springframework.stereotype.Service
+import java.lang.RuntimeException
 
 @Service
 class ClientServiceImpl(val clientRepository: ClientRepository) : ClientService {
@@ -16,6 +17,8 @@ class ClientServiceImpl(val clientRepository: ClientRepository) : ClientService 
     }
 
     override fun save(client: Client): Client {
+        if (!canSaveClient(client))
+            throw RuntimeException("Client already exists.")
         return clientRepository.save(client)
     }
 

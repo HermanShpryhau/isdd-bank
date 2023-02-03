@@ -3,10 +3,9 @@ package org.shph.bank.controller.dto.assembler
 import org.shph.bank.controller.dto.ClientDto
 import org.shph.bank.model.Address
 import org.shph.bank.model.Client
+import org.shph.bank.model.Disability
 import org.shph.bank.repository.*
 import org.springframework.stereotype.Component
-import java.time.LocalDateTime
-import java.time.LocalTime
 
 @Component
 class ClientDtoAssembler(
@@ -27,7 +26,7 @@ class ClientDtoAssembler(
 
         val maritalStatus = maritalStatusRepository.findById(dto.maritalStatusId).orElseThrow()
 
-        val disability = disabilityRepository.findById(dto.disabilityId).orElseThrow()
+        val disability: Disability? = disabilityRepository.findById(dto.disabilityId).orElse(null)
 
         return Client(
             id = dto.id,
@@ -82,7 +81,7 @@ class ClientDtoAssembler(
             positionAtWork = entity.positionAtWork,
             citizenshipId = entity.citizenship.id!!,
             maritalStatusId = entity.maritalStatus.id!!,
-            disabilityId = entity.disability.id!!,
+            disabilityId = entity.disability?.id!!,
             retiredFlag = entity.retiredFlag,
             monthlyIncome = entity.monthlyIncome
         )

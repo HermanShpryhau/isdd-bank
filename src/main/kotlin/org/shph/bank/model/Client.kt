@@ -108,9 +108,9 @@ open class Client(
     open var maritalStatus: MaritalStatus,
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "disability_id", nullable = false)
-    open var disability: Disability,
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "disability_id", nullable = true)
+    open var disability: Disability?,
 
     @NotNull
     @Column(name = "retired_flag", nullable = false)

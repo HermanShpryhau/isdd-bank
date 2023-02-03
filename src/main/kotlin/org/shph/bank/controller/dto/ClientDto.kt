@@ -88,7 +88,6 @@ data class ClientDto(
     @field:NotNull
     val maritalStatusId: Long = -1,
 
-    @field:NotNull
     val disabilityId: Long = -1,
 
     val retiredFlag: Boolean = false,
