@@ -34,4 +34,4 @@ open class Transaction(
     @NotNull
     @Column(name = "committed_flag", nullable = false)
     open var committed: Boolean = false
-)
+): EntityBean
