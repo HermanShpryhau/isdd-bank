@@ -1,6 +1,6 @@
 package org.shph.bank.controller.dto.assembler
 
-import org.shph.bank.controller.dto.ClientDto
+import org.shph.bank.controller.dto.ClientEntityDto
 import org.shph.bank.model.Address
 import org.shph.bank.model.Client
 import org.shph.bank.model.Disability
@@ -14,8 +14,8 @@ class ClientDtoAssembler(
     val cityRepository: CityRepository,
     val disabilityRepository: DisabilityRepository,
     val maritalStatusRepository: MaritalStatusRepository
-): DtoAssembler<Client, ClientDto> {
-    override fun toEntity(dto: ClientDto): Client {
+): DtoAssembler<Client, ClientEntityDto> {
+    override fun toEntity(dto: ClientEntityDto): Client {
         val residentialAddressCity = cityRepository.findById(dto.residentialAddressCityId).orElseThrow()
         val residentialAddress = addressRepository.save(Address(city = residentialAddressCity, addressText = dto.residentialAddress))
 
@@ -56,8 +56,8 @@ class ClientDtoAssembler(
         )
     }
 
-    override fun toDto(entity: Client): ClientDto {
-        return ClientDto(
+    override fun toDto(entity: Client): ClientEntityDto {
+        return ClientEntityDto(
             id = entity.id,
             lastName = entity.lastName,
             firstName = entity.firstName,

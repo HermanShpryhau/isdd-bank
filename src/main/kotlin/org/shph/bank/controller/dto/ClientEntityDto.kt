@@ -6,7 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat
 import java.math.BigDecimal
 import java.time.LocalDate
 
-data class ClientDto(
+data class ClientEntityDto(
     val id: Long? = null,
 
     @field:NotNull
@@ -93,4 +93,4 @@ data class ClientDto(
     val retiredFlag: Boolean = false,
 
     val monthlyIncome: BigDecimal? = null
-): Dto
+): EntityDto

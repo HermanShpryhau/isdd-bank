@@ -1,6 +1,6 @@
 package org.shph.bank.controller.dto.assembler
 
-import org.shph.bank.controller.dto.AccountDto
+import org.shph.bank.controller.dto.AccountEntityDto
 import org.shph.bank.model.Account
 import org.shph.bank.repository.AccountTypeRepository
 import org.shph.bank.repository.ClientRepository
@@ -11,8 +11,8 @@ import java.lang.RuntimeException
 class AccountDtoAssembler(
     val clientRepository: ClientRepository,
     val accountTypeRepository: AccountTypeRepository
-): DtoAssembler<Account, AccountDto> {
-    override fun toEntity(dto: AccountDto): Account {
+): DtoAssembler<Account, AccountEntityDto> {
+    override fun toEntity(dto: AccountEntityDto): Account {
         val owner = clientRepository.findById(dto.ownerId).orElseThrow()
 
         val accountTypeCode = dto.accountType.split(" ")[0]
@@ -28,7 +28,7 @@ class AccountDtoAssembler(
         )
     }
 
-    override fun toDto(entity: Account): AccountDto {
+    override fun toDto(entity: Account): AccountEntityDto {
         val accountType = entity.accountType
         val accountTypeDisplayName = accountType.accountTypeCode + " " + accountType.accountTypeName
 
@@ -38,7 +38,7 @@ class AccountDtoAssembler(
             "БАНК"
         }
 
-        return AccountDto(
+        return AccountEntityDto(
             id = entity.id,
             accountNumber = entity.accountNumber,
             accountType = accountTypeDisplayName,

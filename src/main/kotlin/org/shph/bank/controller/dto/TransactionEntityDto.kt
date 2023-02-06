@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Positive
 import java.math.BigDecimal
 
-data class TransactionDto(
+data class TransactionEntityDto(
     @field:NotNull
     val transactionId: Long?,
 
@@ -17,4 +17,4 @@ data class TransactionDto(
     @field:NotNull
     @field:Positive
     val amount: BigDecimal
-): Dto
+): EntityDto

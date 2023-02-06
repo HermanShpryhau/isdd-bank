@@ -30,4 +30,4 @@ open class Account(
     @NotNull
     @Column(name = "account_balance", nullable = false)
     open var accountBalance: BigDecimal = BigDecimal.ZERO
-)
+): EntityBean

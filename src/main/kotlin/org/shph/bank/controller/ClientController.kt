@@ -1,6 +1,6 @@
 package org.shph.bank.controller
 
-import org.shph.bank.controller.dto.ClientDto
+import org.shph.bank.controller.dto.ClientEntityDto
 import org.shph.bank.controller.dto.assembler.DtoAssembler
 import org.shph.bank.model.Client
 import org.shph.bank.repository.*
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 @RequestMapping("/clients")
 class ClientController(
     val clientService: ClientService,
-    val clientDtoAssembler: DtoAssembler<Client, ClientDto>,
+    val clientDtoAssembler: DtoAssembler<Client, ClientEntityDto>,
     val citizenshipRepository: CitizenshipRepository,
     val cityRepository: CityRepository,
     val disabilityRepository: DisabilityRepository,
@@ -34,7 +34,7 @@ class ClientController(
     fun createNewClient(model: Model): String {
         loadSelectOptions(model)
         model.addAttribute("newClient", true)
-        model.addAttribute("client", ClientDto())
+        model.addAttribute("client", ClientEntityDto())
         return "clients/clientForm"
     }
 
@@ -53,7 +53,7 @@ class ClientController(
     }
 
     @PostMapping
-    fun saveClient(@ModelAttribute dto: ClientDto, model: Model): String {
+    fun saveClient(@ModelAttribute dto: ClientEntityDto, model: Model): String {
         clientService.save(clientDtoAssembler.toEntity(dto))
         return "redirect:clients"
     }
