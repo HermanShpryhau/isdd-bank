@@ -1,5 +1,6 @@
 package org.shph.bank.controller.exception
 
+import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.servlet.ModelAndView
@@ -7,7 +8,7 @@ import org.springframework.web.servlet.ModelAndView
 @ControllerAdvice
 class ValidationExceptionHandler {
     @ExceptionHandler
-    fun handleValidationException(e: Exception): ModelAndView {
+    fun handleValidationException(e: MethodArgumentNotValidException): ModelAndView {
         val modelAndView = ModelAndView()
         modelAndView.viewName = "clients/clientForm"
         modelAndView.addObject("validationErrors", true)

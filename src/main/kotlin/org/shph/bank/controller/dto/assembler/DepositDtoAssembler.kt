@@ -20,8 +20,8 @@ class DepositDtoAssembler(
         return DepositDto(
             id = entity.id,
             contractNumber = entity.contractNumber,
-            activeAccountNumber = entity.depositAccount.accountNumber,
-            passiveAccountNumber = entity.interestAccount.accountNumber,
+            depositAccountNumber = entity.depositAccount.accountNumber,
+            interestAccountNumber = entity.interestAccount.accountNumber,
             depositType = entity.depositType.depositTypeName,
             depositTypeId = entity.depositType.id,
             startDate = entity.startDate,

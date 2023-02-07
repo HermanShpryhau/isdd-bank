@@ -26,7 +26,7 @@ class ClientDtoAssembler(
 
         val maritalStatus = maritalStatusRepository.findById(dto.maritalStatusId).orElseThrow()
 
-        val disability: Disability? = disabilityRepository.findById(dto.disabilityId).orElse(null)
+        val disability: Disability? = dto.disabilityId?.let { disabilityRepository.findById(it).orElse(null) }
 
         return Client(
             id = dto.id,
@@ -81,7 +81,7 @@ class ClientDtoAssembler(
             positionAtWork = entity.positionAtWork,
             citizenshipId = entity.citizenship.id!!,
             maritalStatusId = entity.maritalStatus.id!!,
-            disabilityId = entity.disability?.id!!,
+            disabilityId = entity.disability?.id,
             retiredFlag = entity.retiredFlag,
             monthlyIncome = entity.monthlyIncome
         )

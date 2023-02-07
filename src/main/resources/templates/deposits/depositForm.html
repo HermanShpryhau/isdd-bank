@@ -1,0 +1,91 @@
+<html lang="ru-RU">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+            crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/imask"></script>
+    <title>Новый вклад</title>
+</head>
+<body>
+<div th:with="depositsPage=true">
+    <div th:insert="~{components/navbar.html :: navbar}"></div>
+</div>
+
+<div class="container">
+    <h1 class="mt-5">Новый вклад</h1>
+
+    <div th:if="${validationErrors}">
+        <div class="toast text-bg-danger show" data-bs-autohide="false" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">Ошибка</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                Введенные данные некорректны.
+            </div>
+        </div>
+    </div>
+
+    <form class="col-md mt-5" action="#" th:action="@{/deposits/new}" th:object="${deposit}" method="post">
+        <div class="row">
+            <div class="mb-3 col">
+                <label for="contractNumberInput" class="form-label">Номер договора</label>
+                <input required class="form-control" id="contractNumberInput" type="text" th:field="*{contractNumber}">
+            </div>
+            <div class="mb-3 col">
+                <label for="ownerIdInput" class="form-label">Datalist example</label>
+                <input class="form-control" list="ownerIdInputOptions" id="ownerIdInput" placeholder="ФИО Вкладчика" th:field="*{ownerId}">
+                <datalist id="ownerIdInputOptions">
+                    <option th:each="client : ${clients}" th:value="${client.id}" th:text="${client.lastName + ' ' + client.firstName + ' ' + client.middleName}"/>
+                </datalist>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="mb-3 col-4">
+                <label for="accountTypeIdInput" class="form-label">Тип счета</label>
+                <select class="form-select col-4" id="accountTypeIdInput" th:field="*{accountTypeId}">
+                    <option th:value="-1" disabled selected value></option>
+                    <option th:each="accountType : ${accountTypes}" th:value="${accountType.id}" th:text="${accountType.accountTypeName}"></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="mb-3 col-4">
+                <label for="depositTypeIdInput" class="form-label">Тип вклада</label>
+                <select class="form-select col-4" id="depositTypeIdInput" th:field="*{depositTypeId}">
+                    <option th:value="-1" disabled selected value></option>
+                    <option th:each="depositType : ${depositTypes}" th:value="${depositType.id}" th:text="${depositType.depositTypeName}"></option>
+                </select>
+            </div>
+
+            <div class="mb-3 col-6">
+                <label for="initialDepositInput" class="form-label">Начальная сумма</label>
+                <input type="number" id="initialDepositInput" class="form-control" th:field="*{initialDeposit}">
+            </div>
+            <div class="mb-3 col-2">
+                <label for="currencyInput" class="form-label">Валюта</label>
+                <select class="form-select col-4" id="currencyInput" th:field="*{currency}">
+                    <option th:value="-1" disabled selected value></option>
+                    <option th:each="currency : ${currencies}" th:value="${currency.currencyName}" th:text="${currency.currencyName}"></option>
+                </select>
+            </div>
+        </div>
+
+        <button class="btn btn-primary" type="submit" th:text="Создать"></button>
+
+    </form>
+</div>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+</body>
+</html>

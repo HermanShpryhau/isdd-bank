@@ -21,6 +21,8 @@
 <div class="container">
     <h1 class="mt-5">Вклады</h1>
 
+    <a th:href="@{/deposits/new}" class="btn btn-primary"><i class="bi bi-plus-square"></i> Создать новый вклад</a>
+
     <table class="table table-striped">
         <thead>
         <tr>
@@ -42,8 +44,9 @@
             <td th:text="${deposit.id}"></td>
             <td th:text="${deposit.contractNumber}"></td>
             <td th:text="${deposit.depositType}"></td>
-            <td><a th:text="${deposit.ownerName}" th:herf="@{http://localhost:8080/clients/{id}(id=${deposit.ownerId})}"></a></td>
+            <td><a th:text="${deposit.ownerName}" th:href="@{/clients/{id}(id=${deposit.ownerId})}"></a></td>
             <td th:text="${deposit.initialDeposit}"></td>
+            <td th:text="${deposit.interest}"></td>
             <td th:text="${deposit.currency}"></td>
             <td th:text="${deposit.startDate}"></td>
             <td th:text="${deposit.endDate}"></td>
@@ -52,8 +55,8 @@
                     <button type="submit" class="btn btn-outline-success">Выплатить</button>
                 </form>
             </td>
-            <td th:if="${deposit.recallable}">
-                <form method="POST" th:action="@{/deposits/{id}/close(id=${deposit.id})}">
+            <td>
+                <form th:if="${deposit.recallable}" method="POST" th:action="@{/deposits/{id}/close(id=${deposit.id})}">
                     <button type="submit" class="btn btn-outline-danger">Закрыть</button>
                 </form>
             </td>

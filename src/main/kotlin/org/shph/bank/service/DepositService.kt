@@ -47,7 +47,7 @@ class DepositService(
         )
         accountRepository.save(interestAccount)
 
-        val depositType = depositTypeRepository.findByDepositTypeName(depositDto.depositType)
+        val depositType = depositDto.depositTypeId?.let { depositTypeRepository.findById(it).orElseThrow() }
             ?: throw RuntimeException("Deposit type not found")
 
         val currency = currencyRepository.findByCurrencyName(depositDto.currency)
@@ -78,7 +78,7 @@ class DepositService(
     private fun generateAccountNumber(): String {
         var result = ""
         for (i in 0..12) {
-            result += Random.Default.nextInt()
+            result += Random.Default.nextInt(0, 9)
         }
         return result
     }
