@@ -8,7 +8,7 @@ import java.lang.RuntimeException
 @Service
 class ClientService(val clientRepository: ClientRepository) {
     fun findAll(): List<Client> {
-        return clientRepository.findAll()
+        return clientRepository.findAll().sortedBy { c -> c.lastName + " " + c.firstName + " " + c.middleName }
     }
 
     fun findById(id: Long): Client? {

@@ -34,7 +34,7 @@
         <tbody>
         <tr th:each="account : ${accounts}">
             <td th:text="${account.id}"></td>
-            <td><a class="link-primary" th:text="${account.accountNumber}" th:href="@{/accounts/{id}(id=${account.id})}"></a></td>
+            <td class="font-monospace"><a class="link-primary" th:text="${account.accountNumber}" th:href="@{/accounts/{id}(id=${account.id})}"></a></td>
             <td th:text="${account.accountType}"></td>
             <td><a class="link-primary" th:text="${account.ownerName}" th:href="@{/clients/{id}(id=${account.ownerId})}"></a></td>
             <td th:text="${account.balance}"></td>

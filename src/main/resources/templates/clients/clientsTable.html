@@ -37,7 +37,7 @@
             <tr th:each="client : ${clients}">
                 <td th:text="${client.id}"></td>
                 <td th:text="${client.lastName + ' ' + client.firstName + ' ' + client.middleName}"></td>
-                <td th:text="${client.passportIdNumber}"></td>
+                <td class="font-monospace" th:text="${client.passportIdNumber}"></td>
                 <td><a class="btn btn-outline-primary" th:href="@{/clients/{id}(id=${client.id})}"><i
                         class="bi bi-pencil-square"></i></a></td>
                 <td>
