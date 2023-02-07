@@ -16,5 +16,7 @@ data class DepositDto(
     val startDate: LocalDate,
     val endDate: LocalDate,
     val initialDeposit: BigDecimal,
-    val currency: String
+    val interest: BigDecimal,
+    val currency: String,
+    val recallable: Boolean
 ): EntityDto

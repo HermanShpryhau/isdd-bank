@@ -20,13 +20,18 @@ open class Deposit(
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "active_account_id", nullable = false)
-    open var activeAccount: Account,
+    @JoinColumn(name = "owner_id", nullable = false)
+    open var owner: Client,
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "passive_account_id", nullable = false)
-    open var passiveAccount: Account,
+    @JoinColumn(name = "deposit_account_id", nullable = false)
+    open var depositAccount: Account,
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "interest_account_id", nullable = false)
+    open var interestAccount: Account,
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -48,5 +53,9 @@ open class Deposit(
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "currency_id", nullable = false)
-    open var currency: Currency
+    open var currency: Currency,
+
+    @NotNull
+    @Column(name = "active_flag", nullable = false)
+    open var active: Boolean = true
 ): EntityBean

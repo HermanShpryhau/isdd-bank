@@ -17,8 +17,13 @@ class DepositService(
     val clientService: ClientService,
     val accountRepository: AccountRepository,
     val accountTypeRepository: AccountTypeRepository,
-    val currencyRepository: CurrencyRepository
+    val currencyRepository: CurrencyRepository,
+    val transactionService: TransactionService
 ) {
+    fun findAll(): List<Deposit> {
+        return depositRepository.findByActiveTrue()
+    }
+
     @Transactional
     fun createDeposit(depositDto: DepositDto): Deposit {
         val owner = depositDto.ownerId?.let { clientService.findById(it) } ?: throw RuntimeException("Owner not found")
@@ -26,21 +31,21 @@ class DepositService(
         val accountType = depositDto.accountTypeId?.let { accountTypeRepository.findById(it).orElseThrow() }
             ?: throw RuntimeException("Account type not found")
 
-        val activeAccount = Account(
+        val depositAccount = Account(
             accountNumber = generateAccountNumber(),
             accountOwner = owner,
             accountBalance = BigDecimal.ZERO,
             accountType = accountType
         )
-        accountRepository.save(activeAccount)
+        accountRepository.save(depositAccount)
 
-        val passiveAccount = Account(
+        val interestAccount = Account(
             accountNumber = generateAccountNumber(),
             accountOwner = owner,
             accountBalance = BigDecimal.ZERO,
             accountType = accountType
         )
-        accountRepository.save(passiveAccount)
+        accountRepository.save(interestAccount)
 
         val depositType = depositTypeRepository.findByDepositTypeName(depositDto.depositType)
             ?: throw RuntimeException("Deposit type not found")
@@ -48,18 +53,26 @@ class DepositService(
         val currency = currencyRepository.findByCurrencyName(depositDto.currency)
             ?: throw RuntimeException("Currency not found")
 
-        val deposit = Deposit(
-            contractNumber = UUID.randomUUID().toString(),
-            activeAccount = activeAccount,
-            passiveAccount = passiveAccount,
-            depositType = depositType,
-            startDate = depositDto.startDate,
-            endDate = depositDto.endDate,
-            nextInterestPayDate = depositDto.startDate.plusMonths(1),
-            currency = currency
+        val deposit = depositRepository.save(
+            Deposit(
+                contractNumber = UUID.randomUUID().toString(),
+                depositAccount = depositAccount,
+                interestAccount = interestAccount,
+                depositType = depositType,
+                startDate = depositDto.startDate,
+                endDate = depositDto.endDate,
+                nextInterestPayDate = depositDto.startDate.plusMonths(1),
+                currency = currency,
+                owner = owner
+            )
         )
 
-        return depositRepository.save(deposit)
+        val bankAccount = accountRepository.findById(1).orElseThrow()
+        val transactionUUID = UUID.randomUUID()
+        transactionService.createTransaction(bankAccount, depositDto.initialDeposit, transactionUUID)
+        transactionService.createTransaction(bankAccount, depositAccount, depositDto.initialDeposit, transactionUUID)
+
+        return deposit
     }
 
     private fun generateAccountNumber(): String {
@@ -68,5 +81,35 @@ class DepositService(
             result += Random.Default.nextInt()
         }
         return result
+    }
+
+    @Transactional
+    fun payInterest(depositId: Long) {
+        val deposit = depositRepository.findById(depositId).orElseThrow()
+
+        val interest = deposit.depositType.interest
+        val addedAmount = deposit.depositAccount.accountBalance * interest
+
+        val bankFundAccount = accountRepository.findById(2).orElseThrow()
+        transactionService.createTransaction(bankFundAccount, deposit.interestAccount, addedAmount)
+    }
+
+    @Transactional
+    fun closeDeposit(depositId: Long) {
+        val deposit = depositRepository.findById(depositId).orElseThrow()
+
+        val depositAmount = deposit.depositAccount.accountBalance
+        val interestAmount = deposit.interestAccount.accountBalance
+        val transactionUUID = UUID.randomUUID()
+
+        val bankAccount = accountRepository.findById(1).orElseThrow()
+        transactionService.createTransaction(deposit.depositAccount, bankAccount, depositAmount, transactionUUID)
+        transactionService.createTransaction(bankAccount, -depositAmount, transactionUUID)
+
+        transactionService.createTransaction(deposit.interestAccount, bankAccount, interestAmount, transactionUUID)
+        transactionService.createTransaction(bankAccount, -interestAmount, transactionUUID)
+
+        deposit.active = false
+        depositRepository.save(deposit)
     }
 }

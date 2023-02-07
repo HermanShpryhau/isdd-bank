@@ -1,0 +1,24 @@
+<div th:fragment="transactionsTable">
+    <h2>Транзакции</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">UUID</th>
+            <th scope="col">Номер счета</th>
+            <th scope="col">Сумма</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!--/*@thymesVar id="transactions" type="org.shph.bank.controller.dto.TransactionEntityDto"*/-->
+        <tr th:each="transaction : ${transactions}">
+            <td th:text="${transaction.transactionId}"></td>
+            <td th:text="${transaction.transactionUUID}"></td>
+            <td th:text="${transaction.accountNumber}">
+                <a class="btn btn-outline-primary" th:href="@{/accounts/{id}(id=${transaction.accountId})}"></a>
+            </td>
+            <td th:text="${transaction.amount}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>

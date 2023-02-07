@@ -22,5 +22,9 @@ open class DepositType(
 
     @NotNull
     @Column(name = "interest", nullable = false)
-    open var interest: BigDecimal
+    open var interest: BigDecimal,
+
+    @NotNull
+    @Column(name = "recallable_flag", nullable = false)
+    open var recallable: Boolean
 ): EntityBean

@@ -4,6 +4,7 @@ import jakarta.persistence.*
 import jakarta.validation.constraints.NotNull
 import java.math.BigDecimal
 import java.time.LocalDateTime
+import java.util.UUID
 
 @Entity
 @Table(name = "transactions")
@@ -14,14 +15,12 @@ open class Transaction(
     open var id: Long? = null,
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "source_account_id", nullable = false)
-    open var sourceAccount: Account,
+    @Column(name = "transaction_uuid", nullable = false)
+    open var transactionUUID: UUID,
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "destination_account_id", nullable = false)
-    open var destinationAccount: Account,
+    @JoinColumn(name = "account_id", nullable = true)
+    open var account: Account,
 
     @NotNull
     @Column(name = "amount", nullable = false)
