@@ -1,7 +1,7 @@
 package org.shph.bank.service
 
 import jakarta.transaction.Transactional
-import org.shph.bank.controller.dto.DepositDto
+import org.shph.bank.controller.dto.DepositEntityDto
 import org.shph.bank.model.Account
 import org.shph.bank.model.Deposit
 import org.shph.bank.repository.*
@@ -25,7 +25,7 @@ class DepositService(
     }
 
     @Transactional
-    fun createDeposit(depositDto: DepositDto): Deposit {
+    fun createDeposit(depositDto: DepositEntityDto): Deposit {
         val owner = depositDto.ownerId?.let { clientService.findById(it) } ?: throw RuntimeException("Owner not found")
 
         val accountType = depositDto.accountTypeId?.let { accountTypeRepository.findById(it).orElseThrow() }

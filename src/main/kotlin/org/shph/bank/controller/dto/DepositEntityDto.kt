@@ -3,15 +3,15 @@ package org.shph.bank.controller.dto
 import java.math.BigDecimal
 import java.time.LocalDate
 
-data class DepositDto(
+data class DepositEntityDto(
     val id: Long? = null,
     val contractNumber: String = "",
     val ownerId: Long? = null,
     val ownerName: String? = null,
     val depositAccountNumber: String? = null,
     val interestAccountNumber: String? = null,
-    val accountTypeId: Long? = null,
-    val depositTypeId: Long? = null,
+    val accountTypeId: Long? = -1,
+    val depositTypeId: Long? = -1,
     val depositType: String = "",
     val startDate: LocalDate = LocalDate.now(),
     val endDate: LocalDate = LocalDate.now(),

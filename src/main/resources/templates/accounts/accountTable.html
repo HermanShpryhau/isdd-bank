@@ -21,6 +21,10 @@
 <div class="container">
     <h1 class="mt-5"> Счета</h1>
 
+    <form method="POST" th:action="@{/accounts/closeday}">
+        <button type="submit" class="btn btn-success">Закрыть банковский день</button>
+    </form>
+
     <table class="table table-striped">
         <thead>
         <tr>

@@ -1,6 +1,6 @@
 package org.shph.bank.controller
 
-import org.shph.bank.controller.dto.DepositDto
+import org.shph.bank.controller.dto.DepositEntityDto
 import org.shph.bank.controller.dto.assembler.ClientDtoAssembler
 import org.shph.bank.controller.dto.assembler.DepositDtoAssembler
 import org.shph.bank.repository.AccountTypeRepository
@@ -38,7 +38,7 @@ class DepositController(
 
     @GetMapping("/new")
     fun createNewDeposit(model: Model): String {
-        val newDeposit = DepositDto(contractNumber = UUID.randomUUID().toString())
+        val newDeposit = DepositEntityDto(contractNumber = UUID.randomUUID().toString())
         model.addAttribute("deposit", newDeposit)
         model.addAttribute("depositTypes", depositTypeRepository.findAll())
         model.addAttribute("clients", clientService.findAll().map { c -> clientDtoAssembler.toDto(c) })
@@ -48,20 +48,20 @@ class DepositController(
     }
 
     @PostMapping("/new")
-    fun saveNewDeposit(@ModelAttribute depositDto: DepositDto, model: Model): String {
+    fun saveNewDeposit(@ModelAttribute depositDto: DepositEntityDto, model: Model): String {
         depositService.createDeposit(depositDto)
-        return "redirect:http://localhost:8080/deposits/"
+        return "redirect:http://localhost:8080/deposits"
     }
 
     @PostMapping("/{id}/payinterest")
     fun payInterest(@PathVariable id: Long): String {
         depositService.payInterest(id)
-        return "redirect:http://localhost:8080/deposits/"
+        return "redirect:http://localhost:8080/deposits"
     }
 
     @PostMapping("/{id}/close")
     fun closeDeposit(@PathVariable id: Long): String {
         depositService.closeDeposit(id)
-        return "redirect:http://localhost:8080/deposits/"
+        return "redirect:http://localhost:8080/deposits"
     }
 }
