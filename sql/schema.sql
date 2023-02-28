@@ -202,3 +202,53 @@ create index transactions_source_account_id_index
 create unique index transactions_transaction_id_uindex
     on public.transactions (transaction_id);
 
+create table public.credits
+(
+    credit_id           bigserial
+        primary key,
+    contract_number     uuid    not null
+        unique,
+    initial_amount      numeric not null,
+    owner_id            bigint  not null
+        constraint credits_clients_client_id_fk
+            references public.clients
+            on delete restrict,
+    start_date          date    not null,
+    end_date            date,
+    currency_id         bigint  not null
+        constraint credits_currencies_currency_id_fk
+            references public.currencies
+            on delete restrict,
+    credit_type_id      bigint  not null
+        constraint credits_deposit_types_deposit_type_id_fk
+            references public.deposit_types
+            on delete restrict,
+    credit_account_id   bigint  not null
+        constraint credits_accounts_account_id_fk
+            references public.accounts
+            on delete restrict,
+    interest_account_id bigint  not null
+        constraint credits_accounts_account_id_fk_2
+            references public.accounts
+            on delete restrict
+);
+
+alter table public.credits
+    owner to "bank-app";
+
+create table public.cards
+(
+    card_id     bigserial
+        primary key,
+    card_number varchar(16)      not null
+        unique,
+    pin         varchar(4)       not null,
+    owner_id    bigint           not null
+        constraint cards_clients_client_id_fk
+            references public.clients
+            on delete restrict,
+    account_id  bigint default 0 not null
+);
+
+alter table public.cards
+    owner to "bank-app";

@@ -40,7 +40,7 @@
                 <input required class="form-control" id="contractNumberInput" type="text" th:field="*{contractNumber}">
             </div>
             <div class="mb-3 col">
-                <label for="ownerIdInput" class="form-label">Datalist example</label>
+                <label for="ownerIdInput" class="form-label">Вкладчик</label>
                 <input class="form-control" list="ownerIdInputOptions" id="ownerIdInput" placeholder="ФИО Вкладчика" th:field="*{ownerId}">
                 <datalist id="ownerIdInputOptions">
                     <option th:each="client : ${clients}" th:value="${client.id}" th:text="${client.lastName + ' ' + client.firstName + ' ' + client.middleName}"/>
@@ -61,7 +61,7 @@
                 <input required class="form-control" id="startDateInput" type="date" th:field="*{startDate}">
             </div>
             <div class="mb-3 col-2">
-                <label for="endDateInput" class="form-label">Дата рождения</label>
+                <label for="endDateInput" class="form-label">Конец периода</label>
                 <input required class="form-control" id="endDateInput" type="date" th:field="*{endDate}">
             </div>
         </div>
