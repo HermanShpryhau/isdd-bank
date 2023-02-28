@@ -48,7 +48,7 @@ class TransactionService(
             }
     }
 
-    fun findByTransactionUUID(transactionUUID: UUID): Transaction? {
+    fun findByTransactionUUID(transactionUUID: UUID): List<Transaction> {
         return transactionRepository.findByTransactionUUID(transactionUUID)
     }
 }

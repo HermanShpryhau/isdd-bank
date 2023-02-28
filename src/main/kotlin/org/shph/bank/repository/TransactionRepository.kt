@@ -10,5 +10,5 @@ interface TransactionRepository: CrudRepository<Transaction, Long> {
 
     fun findByAccount(account: Account): List<Transaction>
 
-    fun findByTransactionUUID(transactionUUID: UUID): Transaction?
+    fun findByTransactionUUID(transactionUUID: UUID): List<Transaction>
 }

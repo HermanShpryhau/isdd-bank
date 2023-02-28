@@ -70,26 +70,30 @@ class AtmController(
         val transaction = transactionService.createTransaction(account, -withdrawal.amount, UUID.randomUUID())
 
         redirectAttributes.addAttribute("transactionUuid", transaction.transactionUUID)
-        return RedirectView("/atm/check", true)
+        return RedirectView("/atm/receipt", true)
     }
 
-    @GetMapping("/check", produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE])
+    @GetMapping("/receipt", produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE])
     @ResponseBody
-    fun getCheck(@RequestParam transactionUuid: UUID): FileSystemResource {
-        val transaction = transactionService.findByTransactionUUID(transactionUuid) ?: throw RuntimeException("Transaction $transactionUuid not found.")
+    fun getReceipt(@RequestParam transactionUuid: UUID): FileSystemResource {
+        val transactions = transactionService.findByTransactionUUID(transactionUuid)
 
-        val pdfOutputStream = FileOutputStream("$baseFilePath/$transactionUuid-check.pdf")
-        val checkPdf = Document()
-        val pdfWriter = PdfWriter.getInstance(checkPdf, pdfOutputStream)
-        checkPdf.apply {
+        val pdfOutputStream = FileOutputStream("$baseFilePath/$transactionUuid-receipt.pdf")
+        val receiptPdf = Document()
+        val pdfWriter = PdfWriter.getInstance(receiptPdf, pdfOutputStream)
+        receiptPdf.apply {
             open()
-            add(Paragraph("Чек ${transaction.transactionUUID}", Font(Font.HELVETICA, 16f, Font.BOLD)))
-            add(Paragraph("Счет: ${transaction.account.accountNumber}"))
-            add(Paragraph("Сумма списания: ${-transaction.amount}"))
+
+            add(Paragraph("Чек $transactionUuid", Font(Font.HELVETICA, 16f, Font.BOLD)))
+            transactions.forEach { transaction ->
+                add(Paragraph("Счет: ${transaction.account.accountNumber}"))
+                add(Paragraph("Сумма списания: ${-transaction.amount}"))
+            }
+
             close()
         }
         pdfWriter.close()
 
-        return FileSystemResource(File("$baseFilePath/$transactionUuid-check.pdf"))
+        return FileSystemResource(File("$baseFilePath/$transactionUuid-receipt.pdf"))
     }
 }
